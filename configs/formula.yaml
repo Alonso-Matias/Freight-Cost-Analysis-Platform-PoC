@@ -1,0 +1,74 @@
+# Month-End Cost Formula Configuration
+# =====================================
+# Defines how actual net logistics cost is calculated.
+# This is the finance logic that makes the analysis match accounting reality.
+#
+# Formula: Actual Net Cost = LE Posting + WE Accrual - WE Reverse Accrual
+#
+# LE = Local Entity (actual posted cost)
+# WE = Work Estimate (accrual = estimated, reverse = correction from prior month)
+
+# Source data types
+data_sources:
+  posting:
+    description: "LE normal LCC posting — actual cost posted in SAP"
+    folder: "postings"
+    file_pattern: "Posting_YYYY-MM.xlsx"
+    sheet: "Data"
+    cost_column: "Ver.Sup.Amt"          # Verified Supplier Amount
+    date_column: "Posting Date"
+
+  accrual:
+    description: "WE accrual — estimated cost for current month"
+    folder: "accruals"
+    file_pattern: "Accrual_YYYY-MM.xlsx"
+    sheet: "SELS Selection"              # or "SELS SELECTION" for .xlsb
+    cost_column: "Ver.Sup.Amt"
+    date_column: "Posting Date"
+
+  reverse_accrual:
+    description: "WE reverse accrual — reversal of prior month's estimate"
+    folder: "accruals"
+    file_pattern: "Accrual_YYYY-MM.xlsx"
+    sheet: "SELS Selection"
+    cost_column: "Ver.Sup.Amt"
+    date_column: "Posting Date"
+    filter: "reverse"                     # identified by negative amounts or TOR type
+
+# The net cost formula (used by code2_dashboard.py)
+formula:
+  name: "Actual Net Logistics Cost"
+  expression: "posting + accrual - reverse_accrual"
+  description: >
+    LE Posting (actual) + WE Accrual (current month estimate)
+    - WE Reverse Accrual (prior month estimate reversed).
+    This ensures analysis matches finance reality, not just raw accrual totals.
+
+# Comparison modes
+comparison_modes:
+  mom:
+    name: "Month-over-Month"
+    description: "Compare current month vs previous month"
+    periods: 2
+
+  yoy:
+    name: "Year-over-Year"
+    description: "Compare current month vs same month last year"
+    periods: 2
+    month_offset: 12
+
+# Rate card comparison
+rate_cards:
+  old:
+    year: 2025
+    description: "2025 B2B contract rates"
+  new:
+    year: 2026
+    description: "2026 B2B contract rates"
+  match_keys:
+    - "carrier"
+    - "destination_country"
+  truck_types:
+    - "FTL"
+    - "STL"
+    - "LTL"

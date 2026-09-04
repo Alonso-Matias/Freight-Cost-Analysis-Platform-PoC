@@ -1,0 +1,46 @@
+# Carrier Mapping Configuration
+# ==============================
+# Maps BMS Carrier IDs to human-readable Carrier Names.
+# All mappings are here, no parquet cache needed. Edit freely.
+#
+# CARR ID entries: key = CARR ID code (e.g. DNF1 = DHL Freight)
+#
+# To add a new carrier, just add a line under carriers below.
+# To override any value, add it under overrides (takes priority).
+
+# Manual overrides (take priority over carriers below)
+overrides:
+  "EBY7": "EXPEDITORS"
+  "EC28": "Geodis"
+
+# Full carrier mapping (29 entries)
+carriers:
+  "DK2Z": "UPS"
+  "DLXA": "EXPEDITORS"
+  "DLXJ": "DHL Freight"
+  "DLXL": "GVT / ID Freight"
+  "DN8W": "Versteijnen Transport"
+  "DNF1": "DHL Freight"
+  "DO7N": "Barsan"
+  "DP6N": "Jan de Rijk"
+  "DQUK": "DB Schenker"
+  "DRFK": "DHL Express"
+  "DRTB": "AGILITY B.V."
+  "DWQG": "GIRTEKA"
+  "DYVH": "BF Global"
+  "EAC2": "Dynalogic"
+  "EACS": "DFDS"
+  "EACU": "BTT"
+  "EACW": "DACHSER SPAIN"
+  "EACY": "PRL FREIGHT"
+  "EB10": "UAB BALTIC TRANSLINE"
+  "EB5M": "WABERER'S"
+  "EC7B": "SEGERS"
+  "EC7C": "VOS TRANSPORT"
+  "ED5T": "First Logistics B.V."
+  "ED5U": "VPD"
+  "G8010": "GEODIS"
+  "G9663": "INL Cargo"
+  "H0721": "VOS TRANSPORT"
+  "H7111": "Bleiras"
+  "MC183": "UPS"

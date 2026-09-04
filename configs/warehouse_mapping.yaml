@@ -1,0 +1,30 @@
+# Warehouse Mapping Configuration
+# ================================
+# Maps BMS download file prefixes to SAP Plant codes.
+# Another department just edits this file — no code changes needed.
+#
+# How it works:
+#   - When you download from BMS, files are named like "T4BA.xlsx", "T4BN.xlsx"
+#   - This maps those prefixes to Plant codes used in postings/accruals
+#   - To add a new warehouse, just add a line below
+
+warehouses:
+  # WEDC/GPCE Netherlands
+  T4BA: L401    # T4BA = Outbound, Plant L401
+  T4BN: L428    # T4BN = Inbound, Plant L428
+
+  # Example: another department would add their warehouses here:
+  # T5BA: L501
+  # T5BN: L528
+  # T6BA: L601
+
+# Division mapping (from BMS "Division" column to display names)
+divisions:
+  A6: "A6 - Consumer Electronics"
+  E4: "E4 - Network Systems"
+  C1: "C1 - CE Outbound"
+
+# ECOM vs B2B mapping
+biz_types:
+  ECOM: "E-Commerce"
+  B2B: "Business-to-Business"

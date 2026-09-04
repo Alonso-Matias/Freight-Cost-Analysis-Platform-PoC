@@ -1,0 +1,49 @@
+# Charge Type → Type of Cost Mapping
+# ===================================
+# Maps BMS Charge Type codes to cost categories.
+# This replaces the Mapping.xlsx file.
+#
+# To add a new charge type, just add a line under charge_types below.
+
+charge_types:
+  "1002802": "1. Truck/Ocean freight"
+  "1100703": "3. Fuel surcharge"
+  "1004800": "4. Exceptional cost"
+  "1004421": "1. Truck/Ocean freight"
+  "1004425": "4. Exceptional cost"
+  "1100425": "3. Fuel surcharge"
+  "1100751": "3. Fuel surcharge"
+  "1002958": "1. Truck/Ocean freight"
+  "1002804": "1. Truck/Ocean freight"
+  "1002900": "1. Truck/Ocean freight"
+  "1100700": "3. Fuel surcharge"
+  "1002955": "1. Truck/Ocean freight"
+  "1100702": "3. Fuel surcharge"
+  "1009979": "2. Return freight"
+  "1002975": "1. Truck/Ocean freight"
+  "1004700": "4. Exceptional cost"
+  "1004710": "4. Exceptional cost"
+  "1002983": "1. Truck/Ocean freight"
+  "1002982": "1. Truck/Ocean freight"
+  "1002976": "1. Truck/Ocean freight"
+  "1002901": "1. Truck/Ocean freight"
+  "1002902": "1. Truck/Ocean freight"
+  "1100720": "3. Fuel surcharge"
+  "1009999": "4. Exceptional cost"
+  "1300920": "4. Exceptional cost"
+  "1100740": "3. Fuel surcharge"
+  "1002914": "1. Truck/Ocean freight"
+  "1002915": "1. Truck/Ocean freight"
+  "1100728": "3. Fuel surcharge"
+  "1100727": "3. Fuel surcharge"
+  "1004121": "4. Exceptional cost"
+  "1004113": "4. Exceptional cost"
+  "3000909": "4. Exceptional cost"
+  "5000301": "4. Exceptional cost"
+
+# Cost type categories (for display)
+cost_categories:
+  - "1. Truck/Ocean freight"
+  - "2. Return freight"
+  - "3. Fuel surcharge"
+  - "4. Exceptional cost"
