@@ -178,9 +178,9 @@ def load_accrual(month_label: str) -> pd.DataFrame:
     f = _find_accrual_file(month_label)
     if f is None:
         return pd.DataFrame()
-    xls = pd.ExcelFile(f)
+    xls = pd.ExcelFile(f, engine="openpyxl")
     sheet_name = _detect_sheet(xls)
-    df = pd.read_excel(f, sheet_name=sheet_name, header=0)
+    df = pd.read_excel(f, sheet_name=sheet_name, header=0, engine="openpyxl")
 
     df.columns = [c.strip() if isinstance(c, str) else c for c in df.columns]
     df[COST_COL] = pd.to_numeric(df[COST_COL], errors="coerce").fillna(0.0)
@@ -219,9 +219,9 @@ def load_posting(month_label: str) -> pd.DataFrame:
     f = POSTING_DIR / f"Posting_{month_label}.xlsx"
     if not f.exists():
         return pd.DataFrame()
-    xls = pd.ExcelFile(f)
+    xls = pd.ExcelFile(f, engine="openpyxl")
     sheet_name = _detect_sheet(xls, preferred_names=("Sheet4", "Data", "DATA"))
-    df = pd.read_excel(f, sheet_name=sheet_name, header=0)
+    df = pd.read_excel(f, sheet_name=sheet_name, header=0, engine="openpyxl")
 
     df.columns = [c.strip() if isinstance(c, str) else c for c in df.columns]
     rename = {"Carrier Name": "Carrier name", "Carrier": "CARR ID"}
@@ -264,12 +264,12 @@ def _parse_rate_card(filepath, year_label):
                     continue
         return None
 
-    xls = pd.ExcelFile(filepath)
+    xls = pd.ExcelFile(filepath, engine="openpyxl")
     all_rates = []
     for sheet in xls.sheet_names:
         if sheet in ("Ratecard (Total) AS-IS", "LSP Allocation"):
             continue
-        df_raw = pd.read_excel(filepath, sheet_name=sheet, header=None, nrows=10)
+        df_raw = pd.read_excel(filepath, sheet_name=sheet, header=None, nrows=10, engine="openpyxl")
         header_row = None
         for idx in range(len(df_raw)):
             row_vals = df_raw.iloc[idx].astype(str).str.strip()
@@ -278,7 +278,7 @@ def _parse_rate_card(filepath, year_label):
                 break
         if header_row is None:
             continue
-        df = pd.read_excel(filepath, sheet_name=sheet, header=header_row)
+        df = pd.read_excel(filepath, sheet_name=sheet, header=header_row, engine="openpyxl")
         df = df.dropna(how="all")
         if len(df) == 0:
             continue
