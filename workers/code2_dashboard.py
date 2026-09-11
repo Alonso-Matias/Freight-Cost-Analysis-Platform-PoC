@@ -46,8 +46,8 @@ COST_COL = "Amt."
 SHIP_COL = "ITR No."
 
 # Rate card files (2025 old vs 2026 new)
-OLD_RATE_CARD = AI_DIR / "rate_card_2025.xlsb"
-NEW_RATE_CARD = AI_DIR / "rate_card_2026.xlsb"
+OLD_RATE_CARD = AI_DIR / "rate_card_2025.xlsx"
+NEW_RATE_CARD = AI_DIR / "rate_card_2026.xlsx"
 
 
 # Warehouse code mapping: accruals use L-codes, postings use T-codes
@@ -157,7 +157,6 @@ def _detect_sheet(xls, preferred_names=("Data", "SELS Selection", "DATA", "SELS 
             sheet = lower_map[name.lower()]
             # Verify it has real headers
             try:
-                engine = "pyxlsb" if str(xls.io).endswith(".xlsb") else None
                 df_check = pd.read_excel(xls, sheet_name=sheet, header=0, nrows=5)
                 if _has_real_headers(df_check):
                     return sheet
@@ -179,10 +178,9 @@ def load_accrual(month_label: str) -> pd.DataFrame:
     f = _find_accrual_file(month_label)
     if f is None:
         return pd.DataFrame()
-    engine = "pyxlsb" if f.suffix == ".xlsb" else None
-    xls = pd.ExcelFile(f, engine=engine)
+    xls = pd.ExcelFile(f)
     sheet_name = _detect_sheet(xls)
-    df = pd.read_excel(f, sheet_name=sheet_name, header=0, engine=engine)
+    df = pd.read_excel(f, sheet_name=sheet_name, header=0)
 
     df.columns = [c.strip() if isinstance(c, str) else c for c in df.columns]
     df[COST_COL] = pd.to_numeric(df[COST_COL], errors="coerce").fillna(0.0)
@@ -254,7 +252,7 @@ def load_posting(month_label: str) -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 @st.cache_data(ttl="6h", show_spinner="Parsing B2B rate cards (2025 & 2026)...")
 def _parse_rate_card(filepath, year_label):
-    """Parse a B2B rate card .xlsb file (vectorized)."""
+    """Parse a B2B rate card file (vectorized)."""
     def _extract_bound(colname):
         s = str(colname)
         if "<=" in s:
@@ -266,12 +264,12 @@ def _parse_rate_card(filepath, year_label):
                     continue
         return None
 
-    xls = pd.ExcelFile(filepath, engine="pyxlsb")
+    xls = pd.ExcelFile(filepath)
     all_rates = []
     for sheet in xls.sheet_names:
         if sheet in ("Ratecard (Total) AS-IS", "LSP Allocation"):
             continue
-        df_raw = pd.read_excel(filepath, sheet_name=sheet, engine="pyxlsb", header=None, nrows=10)
+        df_raw = pd.read_excel(filepath, sheet_name=sheet, header=None, nrows=10)
         header_row = None
         for idx in range(len(df_raw)):
             row_vals = df_raw.iloc[idx].astype(str).str.strip()
@@ -280,7 +278,7 @@ def _parse_rate_card(filepath, year_label):
                 break
         if header_row is None:
             continue
-        df = pd.read_excel(filepath, sheet_name=sheet, engine="pyxlsb", header=header_row)
+        df = pd.read_excel(filepath, sheet_name=sheet, header=header_row)
         df = df.dropna(how="all")
         if len(df) == 0:
             continue
