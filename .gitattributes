@@ -1,0 +1,10 @@
+# Binary files — never convert line endings
+*.xlsx binary
+*.xlsb binary
+*.xls binary
+*.parquet binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.pptx binary
